@@ -1,0 +1,7 @@
+{
+    "name": "api-server",
+    "dockerComposeFile": ["../docker-compose.yml"],
+    "service": "api-server",
+    "shutdownAction": "none",
+    "workspaceFolder": "/workspace/api-server"
+  }

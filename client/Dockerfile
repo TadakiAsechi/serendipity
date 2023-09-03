@@ -1,7 +1,8 @@
 # ベースイメージを指定
 FROM node:lts-alpine
 
-RUN mkdir src
+# 作業ディレクトリを設定
+WORKDIR /src
 
 RUN apk update && \
     apk upgrade && \
