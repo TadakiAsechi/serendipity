@@ -2,8 +2,8 @@
 tmp/*
 
 # Django用
-# api_server/*.log
-# api_server/*.pyc
-# api_server/__pycache__/
-# api_server/db-volumes/
-# api_server/db.sqlite3
+api_server/*.log
+api_server/*.pyc
+api_server/__pycache__/
+api_server/db-volumes/
+api_server/db.sqlite3
