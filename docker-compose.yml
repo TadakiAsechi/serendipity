@@ -16,8 +16,6 @@ services:
       - HOST=0.0.0.0
       - port=3000
       - CHOKIDAR_USEPOLLING=true
-    links:
-      - api-server
 
   api-server:
     # Dockerfileの場所
@@ -26,6 +24,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - '8000:8000'
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
       - .:/workspace
     tty: true

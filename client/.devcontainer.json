@@ -3,5 +3,13 @@
     "dockerComposeFile": ["../docker-compose.yml"],
     "service": "client",
     "shutdownAction": "none",
-    "workspaceFolder": "/workspace/client"
+    "workspaceFolder": "/workspace/client",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "misterj.vue-volar-extention-pack",
+          "esbenp.prettier-vscode",
+        ]
+      }
+    }
   }
