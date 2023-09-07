@@ -10,13 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: chdir
+        working-directory: client
         run: |
           pwd
-          cd client
-          pwd
-    
+
       - name: Checkout code
         uses: actions/checkout@v2
       
