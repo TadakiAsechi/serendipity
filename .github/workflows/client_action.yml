@@ -31,7 +31,7 @@ jobs:
       
       # Assuming there's an equivalent script in package.json for 'generate:dev'
       - name: Build Nuxt.js
-        run: npm run generate:dev
+        run: npm run generate
       
       - name: List directory contents
         run: ls -la
