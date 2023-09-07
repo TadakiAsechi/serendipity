@@ -21,6 +21,8 @@ jobs:
       - name: chdir
         run: |
           echo $GITHUB_WORKSPACE
+          cd client
+          ls -la
 
       - name: Install dependencies
         run: yarn install
