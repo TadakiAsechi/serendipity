@@ -25,13 +25,19 @@ jobs:
           ls -la
 
       - name: Install dependencies
-        run: yarn install
+        run: |
+          cd client/src
+          yarn install
       
       - name: Build Nuxt.js
-        run: yarn generate:dev
+        run:  |
+          cd client/src
+          yarn generate:dev
       
       - name: List directory contents
-        run: ls -la
+        run:  |
+          cd client/src
+          ls -la
         
       - name: Deploy to S3
         env:
