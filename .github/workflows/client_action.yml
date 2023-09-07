@@ -21,7 +21,7 @@ jobs:
       - name: chdir
         run: |
           echo $GITHUB_WORKSPACE
-          cd client
+          cd client/src
           ls -la
 
       - name: Install dependencies
