@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: chdir
         run: |
-          pwd
+          cd ..
           ls -la
 
       - name: Checkout code
