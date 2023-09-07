@@ -23,7 +23,7 @@
         lines.value.push({ id: Date.now(), text});
     }
 
-    // blur blur blur
+    // blur blur blur blur
     async function typeText(lineText: string) {
         for (const char of lineText) {
             typedText.value += char;
