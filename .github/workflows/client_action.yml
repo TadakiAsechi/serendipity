@@ -12,8 +12,8 @@ jobs:
     steps:
       - name: chdir
         run: |
-          cd subdir
           pwd
+          ls -la
 
       - name: Checkout code
         uses: actions/checkout@v2
