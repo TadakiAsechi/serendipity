@@ -12,9 +12,7 @@ jobs:
     steps:
       - name: chdir
         run: |
-          cd ..
-          ls -la
-
+          echo $GITHUB_WORKSPACE
       - name: Checkout code
         uses: actions/checkout@v2
       
