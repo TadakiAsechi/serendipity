@@ -3,7 +3,10 @@
         <div v-for="line in lines" :key="line.id">
             {{ line.text }}
         </div>
-        <div v-if="showCursor">
+        <div v-if="lines.length === 0">
+            {{ loginPrompt }}<span v-if="showCursor">{{ typedText }}<span class="blinking-cursor">|</span></span>
+        </div>
+        <div v-if="showCursor && lines.length > 0">
             {{ typedText }}<span class="blinking-cursor">|</span>
         </div>
     </div>
@@ -22,13 +25,22 @@ const lines = ref<Line[]>([]);
 const typedText = ref("");
 const showCursor = ref(true);
 const awaitingUserInput = ref(false);
+const userName = ref("");
+const loginPrompt = ref("Username: ")
 
 function addLine(text: string) {
     lines.value.push({ id: Date.now(), text });
 }
 
-async function typeText(lineText: string) {
+async function typeText(lineText: string, role: string = "" ) {
     awaitingUserInput.value = false;
+
+    if(role === "CPU"){
+        typedText.value += "[Sum99]　"
+    } else if (role === "USER") {
+        typedText.value += "[" + "username" + "]　"
+    } 
+
     for (const char of lineText) {
         typedText.value += char;
         await new Promise(resolve => setTimeout(resolve, 200));
@@ -56,21 +68,32 @@ async function processUserInput() {
     awaitingUserInput.value = false;
 
     if (typedText.value.trim() === "") return;
-
-    addLine(typedText.value);  
     let userInputValue = typedText.value;
+
+    if (lines.value.length === 0){
+        userName.value = userInputValue
+        loginPrompt.value += userInputValue
+        addLine(loginPrompt.value);  
+    }else{
+        addLine(typedText.value);  
+    }
+
     typedText.value = ""; 
 
     switch (lines.value.length) {
-        case 3:
+        case 1:
             await delay(500);
-            await typeText("Nice to meet you, " + userInputValue + ".");
+            await typeText("　");
+            await typeText("Loging in... ");
+            await typeText("　");
             await delay(500);
-            await typeText("What's your email?");
+            await typeText("Nice to meet you, " + userInputValue + ".", "CPU");
+            await delay(500);
+            await typeText("What's your email?", "CPU");
             break;
-        case 6:
+        case 8:
             await delay(500);
-            await typeText("Thank you for sharing your email!");
+            await typeText("Thank you for sharing your email!", "CPU");
             break;
     }
 
@@ -78,9 +101,6 @@ async function processUserInput() {
 }
 
 onMounted(async () => {
-    await typeText("Konnichiwa.");
-    await delay(1000);
-    await typeText("What's your name?");
     awaitingUserInput.value = true;
     document.addEventListener("keydown", handleInput);
 });
