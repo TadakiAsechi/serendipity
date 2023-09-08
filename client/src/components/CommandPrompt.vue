@@ -41,6 +41,8 @@ async function typeText(lineText: string, role: string = "" ) {
         typedText.value += "[" + "username" + "]　"
     } 
 
+    await delay(300);
+
     for (const char of lineText) {
         typedText.value += char;
         await new Promise(resolve => setTimeout(resolve, 200));
