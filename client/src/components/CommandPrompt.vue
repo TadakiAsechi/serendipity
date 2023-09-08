@@ -28,18 +28,19 @@ const awaitingUserInput = ref(false);
 const userName = ref("");
 const loginPrompt = ref("Username: ")
 
-function addLine(text: string) {
+function addLine(text: string, is_user:boolean = false) {
+    if(is_user){
+        text = "[" + userName.value + "]　" + text 
+    }
     lines.value.push({ id: Date.now(), text });
 }
 
-async function typeText(lineText: string, role: string = "" ) {
+async function typeText(lineText: string, is_CPU: boolean = false ) {
     awaitingUserInput.value = false;
 
-    if(role === "CPU"){
+    if(is_CPU){
         typedText.value += "[Sum99]　"
-    } else if (role === "USER") {
-        typedText.value += "[" + "username" + "]　"
-    } 
+    }
 
     await delay(300);
 
@@ -77,7 +78,7 @@ async function processUserInput() {
         loginPrompt.value += userInputValue
         addLine(loginPrompt.value);  
     }else{
-        addLine(typedText.value);  
+        addLine(typedText.value, true);  
     }
 
     typedText.value = ""; 
@@ -89,13 +90,13 @@ async function processUserInput() {
             await typeText("Loging in... ");
             await typeText("　");
             await delay(500);
-            await typeText("Nice to meet you, " + userInputValue + ".", "CPU");
+            await typeText("Nice to meet you, " + userInputValue + ".", true);
             await delay(500);
-            await typeText("What's your email?", "CPU");
+            await typeText("What's your email?", true);
             break;
-        case 8:
+        case 7:
             await delay(500);
-            await typeText("Thank you for sharing your email!", "CPU");
+            await typeText("Thank you for sharing your email!", true);
             break;
     }
 
