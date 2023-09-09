@@ -9,7 +9,7 @@
         <div v-if="showCursor && lines.length > 0">
             {{ typedText }}<span class="blinking-cursor">|</span>
         </div>
-        <textarea v-if="isMobile" v-model="textareaValue" class="hidden-textarea"></textarea>
+        <textarea v-if="isMobile" v-model="textareaValue" class="hidden-textarea">{{ textareaValue }}</textarea>
     </div>
 </template>
 
