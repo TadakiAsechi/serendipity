@@ -4,15 +4,14 @@
             {{ line.text }}
         </div>
         <div v-if="lines.length === 0">
-            {{ loginPrompt }}<span v-if="showCursor">{{ typedText }}<span class="blinking-cursor">|</span></span>
+            {{ isMobile ? textareaValue : loginPrompt }}<span v-if="showCursor">{{ typedText }}<span class="blinking-cursor">|</span></span>
         </div>
         <div v-if="showCursor && lines.length > 0">
-            {{ typedText }}<span class="blinking-cursor">|</span>
+            {{ isMobile ? textareaValue : typedText }}<span class="blinking-cursor">|</span>
         </div>
-        <textarea v-if="isMobile" v-model="textareaValue" class="hidden-textarea">{{ textareaValue }}</textarea>
+        <textarea v-if="isMobile" v-model="textareaValue" class="hidden-textarea"></textarea>
     </div>
 </template>
-
 
 <script setup lang="ts">
 import {ref, onMounted, onBeforeUnmount, nextTick} from "vue";
