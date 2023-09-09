@@ -9,6 +9,7 @@
         <div v-if="showCursor && lines.length > 0">
             {{ typedText }}<span class="blinking-cursor">|</span>
         </div>
+        <textarea v-if="awaitingUserInput" v-model="typedText" @input="handleMobileInput($event)" class="hidden-textarea" lang="en" pattern="[A-Za-z0-9\s]*"></textarea>
     </div>
 </template>
 
@@ -27,10 +28,11 @@ const showCursor = ref(true);
 const awaitingUserInput = ref(false);
 const userName = ref("");
 const loginPrompt = ref("Username: ")
+const CPUName = "Adam64"
 
 function addLine(text: string, is_user:boolean = false) {
     if(is_user){
-        text = "[" + userName.value + "]　" + text 
+        text = `[${userName.value }] ${text}` 
     }
     lines.value.push({ id: Date.now(), text });
 }
@@ -39,7 +41,7 @@ async function typeText(lineText: string, is_CPU: boolean = false ) {
     awaitingUserInput.value = false;
 
     if(is_CPU){
-        typedText.value += "[Sum99]　"
+        typedText.value += `[${CPUName}]　`
     }
 
     await delay(300);
@@ -87,10 +89,10 @@ async function processUserInput() {
         case 1:
             await delay(500);
             await typeText("　");
-            await typeText("Loging in... ");
+            await typeText("Logging in... ");
             await typeText("　");
             await delay(500);
-            await typeText("Nice to meet you, " + userInputValue + ".", true);
+            await typeText(`Nice to meet you, ${userName.value}.`, true);
             await delay(500);
             await typeText("What's your email?", true);
             break;
@@ -103,9 +105,20 @@ async function processUserInput() {
     awaitingUserInput.value = true;
 }
 
+function handleMobileInput(e: Event) {
+    const inputEvent = e as InputEvent;
+    if (inputEvent.inputType === 'insertText' || inputEvent.inputType === 'deleteContentBackward') {
+        processUserInput();
+    }
+}
+
 onMounted(async () => {
     awaitingUserInput.value = true;
     document.addEventListener("keydown", handleInput);
+    nextTick(() => {
+        const textarea = document.querySelector('.hidden-textarea') as HTMLTextAreaElement;
+        if (textarea) textarea.focus();
+    });
 });
 
 onBeforeUnmount(() => {
@@ -138,5 +151,15 @@ onBeforeUnmount(() => {
     50% {
         color: lime;
     }
+}
+
+.hidden-textarea {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 1px;
+    opacity: 0.01; 
+    z-index: -1;
 }
 </style>
