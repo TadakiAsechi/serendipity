@@ -73,7 +73,6 @@ async function processUserInput() {
     if (typedText.value.trim() === "") return;
 
         userInputValue = typedText.value;
-        typedText.value = ""; 
 
     if (lines.value.length === 0){
         userName.value = userInputValue
@@ -83,6 +82,7 @@ async function processUserInput() {
         addLine(typedText.value, true);  
     }
 
+    typedText.value = ""; 
 
     switch (lines.value.length) {
         case 1:
