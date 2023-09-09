@@ -9,7 +9,7 @@
         <div v-if="showCursor && lines.length > 0">
             {{ typedText }}<span class="blinking-cursor">|</span>
         </div>
-        <textarea v-if="awaitingUserInput" v-model="typedText" @input="handleMobileInput($event)" class="hidden-textarea" lang="en" pattern="[A-Za-z0-9\s]*"></textarea>
+        <textarea v-if="awaitingUserInput" v-model="typedText" @input="handleMobileInput($event)" class="hidden-textarea"></textarea>
     </div>
 </template>
 
