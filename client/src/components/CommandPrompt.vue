@@ -9,7 +9,7 @@
         <div v-if="showCursor && lines.length > 0">
             {{ typedText }}<span class="blinking-cursor">|</span>
         </div>
-        <textarea v-if="awaitingUserInput" v-model="typedText" @input="handleMobileInput($event)" class="hidden-textarea" lang="en" pattern="[A-Za-z0-9\s]*"></textarea>
+        <textarea v-if="isMobile" v-model="textareaValue" class="hidden-textarea"></textarea>
     </div>
 </template>
 
@@ -22,8 +22,18 @@ interface Line {
     text: string;
 }
 
+let isMobile = false;
+
+if (process.client) { // Ensure this runs only on client-side
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    isMobile = /mobile|iphone|ipad|android/.test(userAgent);
+}
+
 const lines = ref<Line[]>([]);
+// キーボード用
 const typedText = ref("");
+// ソフトウェアキーボード用
+const textareaValue = ref("");
 const showCursor = ref(true);
 const awaitingUserInput = ref(false);
 const userName = ref("");
@@ -105,24 +115,29 @@ async function processUserInput() {
     awaitingUserInput.value = true;
 }
 
-function handleMobileInput(e: Event) {
-    const inputEvent = e as InputEvent;
-    if (inputEvent.inputType === 'insertText' || inputEvent.inputType === 'deleteContentBackward') {
+function handleMobileInput() {
+    if (textareaValue.value.endsWith('\n')) {
+        typedText.value = textareaValue.value.trim();
         processUserInput();
+        textareaValue.value = "";
     }
 }
 
 onMounted(async () => {
     awaitingUserInput.value = true;
-    document.addEventListener("keydown", handleInput);
-    nextTick(() => {
-        const textarea = document.querySelector('.hidden-textarea') as HTMLTextAreaElement;
-        if (textarea) textarea.focus();
-    });
+    if (isMobile) {
+        document.addEventListener("input", handleMobileInput);
+    } else {
+        document.addEventListener("keydown", handleInput);
+    }
 });
 
 onBeforeUnmount(() => {
-    document.removeEventListener("keydown", handleInput);
+    if (isMobile) {
+        document.removeEventListener("input", handleMobileInput);
+    } else {
+        document.removeEventListener("keydown", handleInput);
+    }
 });
 
 </script>
@@ -161,5 +176,14 @@ onBeforeUnmount(() => {
     height: 10px;
     opacity: 0.01; 
     z-index: -1;
+    display: none;
 }
+
+ /* スマホでは表示するようにメディアクエリでオーバーライド */
+@media (max-width: 768px) {
+    .hidden-textarea {
+        display: block;
+    }
+}
+
 </style>
