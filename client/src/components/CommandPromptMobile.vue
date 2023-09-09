@@ -9,11 +9,12 @@
         <div v-if="showCursor && lines.length > 0">
             {{ typedText }}<span class="blinking-cursor">|</span>
         </div>
+        <textarea v-model="typedText" class="hidden-textarea"></textarea>
     </div>
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, onBeforeUnmount} from "vue";
+import {ref, onMounted, onBeforeUnmount } from "vue";
 
 interface Line {
     id: number;
@@ -57,15 +58,13 @@ function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function handleInput(e: KeyboardEvent) {
-    if (e.key.length === 1 && awaitingUserInput.value) {
-        typedText.value += e.key;
-    } else if (e.key === "Backspace" && awaitingUserInput.value) {
-        typedText.value = typedText.value.slice(0, -1);
-    } else if (e.key === "Enter" && awaitingUserInput.value) {
+function handleMobileInput() {
+    if (typedText.value.endsWith('\n')) {
+        typedText.value = typedText.value.trim();
         processUserInput();
     }
 }
+
 
 async function processUserInput() {
     awaitingUserInput.value = false;
@@ -73,7 +72,8 @@ async function processUserInput() {
 
     if (typedText.value.trim() === "") return;
 
-    userInputValue = typedText.value;
+        userInputValue = typedText.value;
+        typedText.value = ""; 
 
     if (lines.value.length === 0){
         userName.value = userInputValue
@@ -82,8 +82,7 @@ async function processUserInput() {
     }else{
         addLine(typedText.value, true);  
     }
-    
-    typedText.value = ""; 
+
 
     switch (lines.value.length) {
         case 1:
@@ -105,14 +104,13 @@ async function processUserInput() {
     awaitingUserInput.value = true;
 }
 
-
 onMounted(async () => {
     awaitingUserInput.value = true;
-    document.addEventListener("keydown", handleInput);
+    document.addEventListener("input", handleMobileInput);
 });
 
 onBeforeUnmount(() => {
-    document.removeEventListener("keydown", handleInput);
+    document.removeEventListener("input", handleMobileInput);
 });
 
 </script>
@@ -142,4 +140,16 @@ onBeforeUnmount(() => {
         color: lime;
     }
 }
+
+.hidden-textarea {
+    /* position: absolute;
+    bottom: 0;
+    left: 0; */
+    width: 100vw;
+    height: 10px;
+    opacity: 0.01; 
+    z-index: -1;
+    display: block;
+}
+
 </style>
