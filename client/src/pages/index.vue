@@ -6,17 +6,24 @@
 </template>
 
 <script>
+import { ref,onMounted } from "vue";
+
 import CommandPrompt from '~/components/CommandPrompt.vue';
 import CommandPromptMobile  from '~/components/CommandPromptMobile.vue';
 
-let isMobile = false;
-
-if (process.client) { // Ensure this runs only on client-side
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    isMobile = /mobile|iphone|ipad|android/.test(userAgent);
-}
-
 export default {
+    setup() {
+        const isMobile = ref(false);
+
+        onMounted(() => {
+            const userAgent = window.navigator.userAgent.toLowerCase();
+            console.log(userAgent)
+            isMobile.value = /mobile|iphone|ipad|android/.test(userAgent);
+        })
+
+        return { isMobile };
+
+    },
     components: {
         CommandPrompt,
         CommandPromptMobile,
