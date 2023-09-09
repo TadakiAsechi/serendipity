@@ -154,11 +154,11 @@ onBeforeUnmount(() => {
 }
 
 .hidden-textarea {
-    position: absolute;
+    /* position: absolute;
     bottom: 0;
-    left: 0;
+    left: 0; */
     width: 100vw;
-    height: 1px;
+    height: 10px;
     opacity: 0.01; 
     z-index: -1;
 }
