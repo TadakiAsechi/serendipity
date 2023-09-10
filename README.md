@@ -4,4 +4,4 @@
 
 S3でマスターを自動デプロイしてます。
 （まだ何もないです）
-http://portfolio-tadaki.s3-website-ap-northeast-1.amazonaws.com/
+https://dq5navzgbm7cj.cloudfront.net/index.html
