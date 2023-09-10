@@ -1,4 +1,4 @@
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 
 interface Line {
     id: number;
@@ -6,6 +6,7 @@ interface Line {
 }
 
 export default function common() {
+    const apiUrl = process.env.API_BASE_URL;
 
     const scriptLines = ref<Line[]>([]);
     const typedText = ref("");
