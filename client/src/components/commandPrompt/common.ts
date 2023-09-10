@@ -63,7 +63,7 @@ export default function common() {
         }
 
         typedText.value = "";
-        callScript();
+        await callScript();
 
         awaitingUserInput.value = true;
 
@@ -75,7 +75,7 @@ export default function common() {
 
     // ストーリーの進行に合わせたスクリプトを表示する
     async function callScript(){
-        switch (scriptLines.value.length) {
+        switch (scriptPin.value) {
             case 0:
                 await delay(500);
                 await typeLine("　");
@@ -93,11 +93,12 @@ export default function common() {
         }
 
         scriptPin.value += 1;
+
     }
 
     return {
         scriptLines, typedText, showCursor, awaitingUserInput, userName, loginPrompt,
-        CPUName, addLine, typeLine, delay, processUserInput
+        CPUName, scriptPin, addLine, typeLine, delay, processUserInput
     };
 
 }

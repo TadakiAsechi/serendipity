@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import common from '~/components/commandPrompt/common';
-const { scriptLines, typedText, showCursor, awaitingUserInput, processUserInput } = common();
+const { scriptLines, typedText, showCursor, awaitingUserInput, scriptPin, processUserInput } = common();
 
 function handleInput(e: KeyboardEvent) {
     if (e.key.length === 1 && awaitingUserInput.value) {
