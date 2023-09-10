@@ -1,15 +1,15 @@
 <template>
     <div>
-        <CommandPromptMobile v-if="isMobile" />
-        <CommandPrompt v-else />
+        <mobile v-if="isMobile" />
+        <desktop v-else />
     </div>
 </template>
 
 <script>
 import { ref,onMounted } from "vue";
 
-import CommandPrompt from '~/components/CommandPrompt.vue';
-import CommandPromptMobile  from '~/components/CommandPromptMobile.vue';
+import desktop from '~/components/commandPrompt/desktop.vue';
+import mobile  from '~/components/commandPrompt/mobile.vue';
 
 export default {
     setup() {
@@ -25,8 +25,8 @@ export default {
 
     },
     components: {
-        CommandPrompt,
-        CommandPromptMobile,
+        desktop,
+        mobile,
     }
 };
 </script>
