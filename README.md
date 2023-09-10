@@ -4,4 +4,4 @@
 
 S3でマスターを自動デプロイしてます。
 （まだ何もないです）
-https://dq5navzgbm7cj.cloudfront.net/index.html
+https://localhost-8000.com
