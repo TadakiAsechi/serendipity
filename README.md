@@ -6,13 +6,15 @@ S3でマスターを自動デプロイしてます。
 https://localhost-8000.com
 
 構成（今はクライアントだけ）
-        
+```
 User ----→ route53 & ACM 
                 ↓
-            CroudFront
+            CloudFront
                 ↓
 User --- x ---  S3
                 ↑
-             github action
+            GitHub Action
                 |
-              github
+            GitHub
+
+```
