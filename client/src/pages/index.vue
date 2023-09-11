@@ -1,7 +1,6 @@
 <template>
     <div>
-        <mobile v-if="isMobile" />
-        <desktop v-else />
+        <matrixRain />
     </div>
 </template>
 
@@ -10,6 +9,8 @@ import { ref,onMounted } from "vue";
 
 import desktop from '~/components/commandPrompt/desktop.vue';
 import mobile  from '~/components/commandPrompt/mobile.vue';
+import matrixRain  from '~/components/matrixRain/matrixRain.vue';
+
 
 export default {
     setup() {
@@ -27,6 +28,7 @@ export default {
     components: {
         desktop,
         mobile,
+        matrixRain,
     }
 };
 </script>
