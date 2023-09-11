@@ -12,7 +12,6 @@ User ----→ route53 & ACM
             CroudFront
                 ↓
 User --- x ---  S3
---------------------------
                 ↑
              github action
                 |
