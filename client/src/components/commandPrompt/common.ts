@@ -1,8 +1,13 @@
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
 
 interface Line {
     id: number;
     line: string;
+}
+
+interface userAnswer {
+    pin: number;
+    answer: string;
 }
 
 export default function common() {
@@ -14,9 +19,15 @@ export default function common() {
     const loginPrompt = ref("Username: ")
     const CPUName = "Adam64"
     const scriptPin = ref(0)
+    const userAnswer = ref<userAnswer[]>([])
+
+    const yes_list = ["Y", "y", "yes", "YES", "Yes"]
+    const no_list = ["N", "n", "no", "NO", "No"]
 
     const showCursor = ref(true);
     const awaitingUserInput = ref(false);
+
+    const showMatrixRain = ref(false);
 
     // スクリプトに引数で渡された文字列を加える
     function addLine(line: string, is_user: boolean = false) {
@@ -28,7 +39,7 @@ export default function common() {
 
     // typedTextに、渡されたCPUのセリフを1文字ずつ追加する
     // 表示し終わったらスクリプトに追加、typedTextをクリアする
-    async function typeLine(line: string, is_CPU: boolean = false) {
+    async function typeLine(line: string, is_CPU: boolean = false, tail:string = "") {
         awaitingUserInput.value = false;
 
         if (is_CPU) {
@@ -41,6 +52,13 @@ export default function common() {
             typedText.value += char;
             await delay(200);
         }
+
+        // 末尾に[Y/n]などがあれば追加
+        if(tail){
+            await delay(500);
+            typedText.value += tail;
+        }
+
         addLine(typedText.value);
         typedText.value = "";
     }
@@ -54,6 +72,7 @@ export default function common() {
         if (typedText.value.trim() === "") return;
 
         userInputValue = typedText.value;
+        saveUserAnswer(userInputValue)
 
         if (scriptLines.value.length === 0) {
             userName.value = userInputValue
@@ -76,6 +95,7 @@ export default function common() {
 
     // ストーリーの進行に合わせたスクリプトを表示する
     async function callScript(){
+        
         switch (scriptPin.value) {
             case 0:
                 await delay(500);
@@ -85,11 +105,19 @@ export default function common() {
                 await delay(500);
                 await typeLine(`Nice to meet you, ${userName.value}.`, true);
                 await delay(500);
-                await typeLine("What's your email?", true);
+                await typeLine("Wanna play with me ?", true, "  [Y/n]");
+                await delay(300);
+                await nextTick();
                 break;
             case 1:
                 await delay(500);
-                await typeLine("Thank you for sharing your email!", true);
+                const answer = userAnswer.value.find(e => e.pin === scriptPin.value)?.answer?? "";
+                if( yes_list.includes(answer) ){
+                    await typeLine("OK, come with me !", true);
+                    showMatrixRain.value = true;
+                } else if (no_list.includes(answer)) {
+                    await typeLine("Ok... Bye.", true);
+                }
                 break;
         }
 
@@ -97,9 +125,13 @@ export default function common() {
 
     }
 
+    function saveUserAnswer(userInputValue:string){
+        userAnswer.value.push({ pin: scriptPin.value, answer: userInputValue });
+    }
+
     return {
         scriptLines, typedText, showCursor, awaitingUserInput, userName, loginPrompt,
-        CPUName, scriptPin, addLine, typeLine, delay, processUserInput
+        CPUName, scriptPin, showMatrixRain, addLine, typeLine, delay, processUserInput
     };
 
 }
