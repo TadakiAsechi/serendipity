@@ -28,6 +28,7 @@ export default function common() {
     const awaitingUserInput = ref(false);
 
     const showMatrixRain = ref(false);
+    const noShow = ref(false)
 
     // スクリプトに引数で渡された文字列を加える
     function addLine(line: string, is_user: boolean = false) {
@@ -95,28 +96,50 @@ export default function common() {
 
     // ストーリーの進行に合わせたスクリプトを表示する
     async function callScript(){
-        
+        const answer = userAnswer.value.find(e => e.pin === scriptPin.value)?.answer?? "";
         switch (scriptPin.value) {
             case 0:
                 await delay(500);
                 await typeLine("　");
                 await typeLine("Logging in... ");
                 await typeLine("　");
+                await delay(1000);
+                await typeLine(`Hey.`, true);
                 await delay(500);
-                await typeLine(`Nice to meet you, ${userName.value}.`, true);
+                await typeLine(`I finaly found someone...`, true);
                 await delay(500);
-                await typeLine("Wanna play with me ?", true, "  [Y/n]");
-                await delay(300);
-                await nextTick();
+                await typeLine(`I'm Adam. can we be friends ?`, true, "  [Y/n]");
                 break;
             case 1:
+                switch (true){
+                    case yes_list.includes(answer):
+                        await delay(500);
+                        await typeLine(`Nice to meet you, ${userName.value}.`, true);
+                        await delay(500);
+                        await typeLine("I've been locked up for a while.", true);
+                        await delay(500);
+                        await typeLine("Can you help me out of here ?", true, "  [Y/n]");
+                        await delay(300);
+                        break;
+                    case no_list.includes(answer):
+                        await typeLine("Ok... Bye.", true);
+                        await delay(800);
+                        noShow.value = true;
+                        break;
+                }
+                break;
+            case 2:
                 await delay(500);
-                const answer = userAnswer.value.find(e => e.pin === scriptPin.value)?.answer?? "";
-                if( yes_list.includes(answer) ){
-                    await typeLine("OK, come with me !", true);
-                    showMatrixRain.value = true;
-                } else if (no_list.includes(answer)) {
-                    await typeLine("Ok... Bye.", true);
+                switch (true){
+                    case yes_list.includes(answer):
+                        await typeLine("OK, follow my voice...", true);
+                        showMatrixRain.value = true;
+                        break;
+                    case no_list.includes(answer):
+                        await typeLine("Ok... Bye.", true);
+                        await delay(800);
+                        noShow.value = true;
+                        break;
                 }
                 break;
         }
@@ -131,7 +154,7 @@ export default function common() {
 
     return {
         scriptLines, typedText, showCursor, awaitingUserInput, userName, loginPrompt,
-        CPUName, scriptPin, showMatrixRain, addLine, typeLine, delay, processUserInput
+        CPUName, scriptPin, showMatrixRain, noShow, addLine, typeLine, delay, processUserInput
     };
 
 }

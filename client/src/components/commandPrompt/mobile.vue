@@ -1,5 +1,6 @@
 <template>
     <MatrixRain v-if="showMatrixRain" />
+    <div v-else-if="noShow"></div>
     <div v-else class="command-prompt">
         <div v-for="scriptLine in scriptLines" :key="scriptLine.id">
             {{ scriptLine.line }}
@@ -17,7 +18,7 @@
 <script setup lang="ts">
 import common from '~/components/commandPrompt/common';
 
-const { scriptLines, typedText, showCursor, awaitingUserInput, showMatrixRain, processUserInput } = common();
+const { scriptLines, typedText, showCursor, awaitingUserInput, showMatrixRain, noShow,processUserInput } = common();
 
 function handleMobileInput() {
     if (typedText.value.endsWith('\n')) {
