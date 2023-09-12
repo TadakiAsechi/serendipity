@@ -1,6 +1,7 @@
 <template>
     <div>
-        <matrixRain />
+        <mobile v-if="isMobile" />
+        <desktop v-else />
     </div>
 </template>
 

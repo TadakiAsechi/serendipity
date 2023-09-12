@@ -1,5 +1,6 @@
 <template>
-    <div class="command-prompt">
+    <MatrixRain v-if="showMatrixRain" />
+    <div v-else class="command-prompt">
         <div v-for="scriptLine in scriptLines" :key="scriptLine.id">
             {{ scriptLine.line }}
         </div>
@@ -14,7 +15,7 @@
 
 <script setup lang="ts">
 import common from '~/components/commandPrompt/common';
-const { scriptLines, typedText, showCursor, awaitingUserInput, scriptPin, processUserInput } = common();
+const { scriptLines, typedText, showCursor, awaitingUserInput, showMatrixRain, processUserInput } = common();
 
 function handleInput(e: KeyboardEvent) {
     if (e.key.length === 1 && awaitingUserInput.value) {
