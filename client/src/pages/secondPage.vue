@@ -17,14 +17,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Start aligning from the top */
-    padding-top: 5%; /* Adjust this value to move the image higher or lower */
+    justify-content: flex-start;
+    padding-top: 5%;
 }
 
 
 .centered-image {
     max-width: 50%;
     max-height: 50%;
+    opacity: 0; 
+    animation: fadeIn 5s forwards;
 }
 
 .dialogue-box {
@@ -37,5 +39,14 @@
     margin-top: 20px;
     padding: 10px 20px;
     overflow: auto;
+    opacity: 0; 
+    animation: fadeIn 5s forwards;
+
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1; /* End opacity is 1 (fully visible) */
+    }
 }
 </style>
