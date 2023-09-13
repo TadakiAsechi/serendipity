@@ -106,7 +106,7 @@ export default function common() {
                 await delay(1000);
                 await typeLine(`Hey.`, true);
                 await delay(500);
-                await typeLine(`I finaly found someone...`, true);
+                await typeLine(`I finally found someone...`, true);
                 await delay(500);
                 await typeLine(`I'm Adam. can we be friends ?`, true, "  [Y/n]");
                 break;
