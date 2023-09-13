@@ -78,17 +78,10 @@ const createMatrixRain = (initialScript: any[]) => {
   }
 
   setTimeout(() => {
-    matrixRainEl.style.backgroundColor = 'black';
-
-    const spans = matrixRainEl.querySelectorAll('span');
-    spans.forEach(span => {
-      span.style.animationPlayState = 'paused';
-    });
-
     setTimeout(() => {
     router.push('/SecondPage');
       }, 1000);
-  }, 5000);
+  }, 8000);
 };
 
 function animateDrop(span: HTMLElement, delay: number, duration: number) {
