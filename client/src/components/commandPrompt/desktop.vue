@@ -1,5 +1,5 @@
 <template>
-    <MatrixRain v-if="showMatrixRain" />
+    <MatrixRain v-if="showMatrixRain" :initialScript="scriptLines" />
     <div v-else-if="noShow"></div>
     <div v-else class="command-prompt">
         <div v-for="scriptLine in scriptLines" :key="scriptLine.id">
