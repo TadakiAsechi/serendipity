@@ -11,6 +11,10 @@
 </script>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 .container {
     height: 100vh;
     background-color: black;
@@ -31,7 +35,8 @@
 
 .dialogue-box {
     width: 80%;
-    height: 30%;
+    max-height: 260px;
+    height: 40%; 
     border: thick solid;
     border-radius: 10px;
     border-color: aliceblue;
@@ -41,12 +46,21 @@
     overflow: auto;
     opacity: 0; 
     animation: fadeIn 5s forwards;
+}
 
+@media (max-width: 735px) {
+    .dialogue-box {
+        max-height: 400px;
+    }
+    .centered-image {
+        min-height: 320px;
+        min-width: 320px;
+    }
 }
 
 @keyframes fadeIn {
     to {
-        opacity: 1; /* End opacity is 1 (fully visible) */
+        opacity: 1;
     }
 }
 </style>
