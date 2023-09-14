@@ -9,45 +9,19 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const props = defineProps({
-  initialScript: {
-    type: Array,
-    default: () => [] 
-  }
-});
-
 onMounted(() => {
-  if (Array.isArray(props.initialScript)) {
-      createMatrixRain(props.initialScript);
-    } else {
-      createMatrixRain([]);
-    }
-  }
-);
+      createMatrixRain();
+});
 
 const matrixRainRef: Ref<HTMLElement | null> = ref(null);
 
-const createMatrixRain = (initialScript: any[]) => {
+const createMatrixRain = () => {
   const matrixRainEl = matrixRainRef.value;
   
   if (!matrixRainEl) {
     console.error("matrixRainEl not found");
     return;
   }
-
-  initialScript.forEach((script, index) => {
-        const span = document.createElement('span');
-        span.textContent = script.line;
-
-        span.style.top = `${Math.random() * 100}vh`;
-        const colors = ['#0F0', '#2F2', '#4F4'];
-        span.style.color = colors[Math.floor(Math.random() * colors.length)];
-        const animationDuration = Math.random() * 4 + 1;
-        const delay = index * 20;
-
-        matrixRainEl.appendChild(span);
-        animateDrop(span, delay, animationDuration);
-      });
 
   //各カラムの幅
   const columns = window.innerWidth / 15;

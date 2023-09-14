@@ -1,52 +1,34 @@
 <template>
-    <div class="container">
-        <img class="centered-image" src="~/assets/img/robo.png" />
-        <div class="dialogue-box">
-            カイハツチュウ
-        </div>
+    <div>
+        <desktop />
     </div>
 </template>
 
-<script setup lang="ts">
-</script>
+<script>
+import { ref,onMounted } from "vue";
 
-<style>
-.container {
-    height: 100vh;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 5%;
-}
+import desktop from '~/components/secondPage/desktop.vue';
+// import mobile  from '~/components/secondPage/mobile.vue';
+// import matrixRain  from '~/components/matrixRain/matrixRain.vue';
 
 
-.centered-image {
-    max-width: 50%;
-    max-height: 50%;
-    opacity: 0; 
-    animation: fadeIn 5s forwards;
-}
+export default {
+    setup() {
+        const isMobile = ref(false);
 
-.dialogue-box {
-    width: 80%;
-    height: 30%;
-    border: thick solid;
-    border-radius: 10px;
-    border-color: aliceblue;
-    color: lime;
-    margin-top: 20px;
-    padding: 10px 20px;
-    overflow: auto;
-    opacity: 0; 
-    animation: fadeIn 5s forwards;
+        onMounted(() => {
+            const userAgent = window.navigator.userAgent.toLowerCase();
+            console.log(userAgent)
+            isMobile.value = /mobile|iphone|ipad|android/.test(userAgent);
+        })
 
-}
+        return { isMobile };
 
-@keyframes fadeIn {
-    to {
-        opacity: 1; /* End opacity is 1 (fully visible) */
+    },
+    components: {
+        desktop,
+        // mobile,
+        // matrixRain,
     }
-}
-</style>
+};
+</script>

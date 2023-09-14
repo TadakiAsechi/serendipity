@@ -132,7 +132,8 @@ export default function common() {
                 await delay(500);
                 switch (true){
                     case yes_list.includes(answer):
-                        await typeLine("OK, follow my voice...", true);
+                        await typeLine("OK, follow my voice.", true);
+                        await typeLine("Don't get lost...", true);
                         showMatrixRain.value = true;
                         break;
                     case no_list.includes(answer):
