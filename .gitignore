@@ -7,3 +7,5 @@ __pycache__
 api_server/*.log
 api_server/db-volumes/
 api_server/db.sqlite3
+
+node_modules/
