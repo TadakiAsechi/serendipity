@@ -1,4 +1,4 @@
-import { ref, nextTick } from "vue";
+import { ref } from "vue";
 
 interface Line {
     id: number;
@@ -75,10 +75,11 @@ export default function common() {
         userInputValue = typedText.value;
         saveUserAnswer(userInputValue)
 
-        if (scriptLines.value.length === 0) {
+        if (scriptPin.value === 0) {
             userName.value = userInputValue
             loginPrompt.value += userInputValue
             addLine(loginPrompt.value);
+            scriptPin.value += 1;
         } else {
             addLine(typedText.value, true);
         }
@@ -98,7 +99,7 @@ export default function common() {
     async function callScript(){
         const answer = userAnswer.value.find(e => e.pin === scriptPin.value)?.answer?? "";
         switch (scriptPin.value) {
-            case 0:
+            case 1:
                 await delay(500);
                 await typeLine("　");
                 await typeLine("Logging in... ");
@@ -110,7 +111,7 @@ export default function common() {
                 await delay(500);
                 await typeLine(`I'm Adam. can we be friends ?`, true, "  [Y/n]");
                 break;
-            case 1:
+            case 2:
                 switch (true){
                     case yes_list.includes(answer):
                         await delay(500);
@@ -128,7 +129,7 @@ export default function common() {
                         break;
                 }
                 break;
-            case 2:
+            case 3:
                 await delay(500);
                 switch (true){
                     case yes_list.includes(answer):
@@ -142,6 +143,10 @@ export default function common() {
                         noShow.value = true;
                         break;
                 }
+                break;
+            case 4: 
+                await delay(500);
+                await typeLine("This is new script.", true);
                 break;
         }
 

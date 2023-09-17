@@ -2,12 +2,24 @@
     <div class="container">
         <img class="centered-image" src="~/assets/img/robo.png" />
         <div class="dialogue-box">
-            カイハツチュウ
+            <desktop/> 
         </div>
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import desktop from '~/components/commandPrompt/desktop.vue';
+
+export default {
+    setup() {
+        onMounted(() => {
+        })
+
+    },
+    components: {
+        desktop,
+    }
+}
 </script>
 
 <style>
