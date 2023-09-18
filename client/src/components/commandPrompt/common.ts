@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import { useCounterStore } from "../../stores/counter"
 
 interface Line {
     id: number;
@@ -11,6 +12,8 @@ interface userAnswer {
 }
 
 export default function common() {
+    const counterStore = useCounterStore()
+
     const apiUrl = process.env.API_BASE_URL;
 
     const scriptLines = ref<Line[]>([]);
@@ -18,7 +21,6 @@ export default function common() {
     const userName = ref("");
     const loginPrompt = ref("Username: ")
     const CPUName = "Adam64"
-    const scriptPin = ref(0)
     const userAnswer = ref<userAnswer[]>([])
 
     const yes_list = ["Y", "y", "yes", "YES", "Yes"]
@@ -75,11 +77,11 @@ export default function common() {
         userInputValue = typedText.value;
         saveUserAnswer(userInputValue)
 
-        if (scriptPin.value === 0) {
+        if (counterStore.scriptPin === 0) {
             userName.value = userInputValue
             loginPrompt.value += userInputValue
             addLine(loginPrompt.value);
-            scriptPin.value += 1;
+            counterStore.scriptPin += 1;
         } else {
             addLine(typedText.value, true);
         }
@@ -97,8 +99,8 @@ export default function common() {
 
     // ストーリーの進行に合わせたスクリプトを表示する
     async function callScript(){
-        const answer = userAnswer.value.find(e => e.pin === scriptPin.value)?.answer?? "";
-        switch (scriptPin.value) {
+        const answer = userAnswer.value.find(e => e.pin === counterStore.scriptPin)?.answer?? "";
+        switch (counterStore.scriptPin) {
             case 1:
                 await delay(500);
                 await typeLine("　");
@@ -150,17 +152,17 @@ export default function common() {
                 break;
         }
 
-        scriptPin.value += 1;
+        counterStore.scriptPin += 1;
 
     }
 
     function saveUserAnswer(userInputValue:string){
-        userAnswer.value.push({ pin: scriptPin.value, answer: userInputValue });
+        userAnswer.value.push({ pin: counterStore.scriptPin, answer: userInputValue });
     }
 
     return {
         scriptLines, typedText, showCursor, awaitingUserInput, userName, loginPrompt,
-        CPUName, scriptPin, showMatrixRain, noShow, addLine, typeLine, delay, processUserInput
+        CPUName, showMatrixRain, noShow, addLine, typeLine, delay, processUserInput
     };
 
 }
