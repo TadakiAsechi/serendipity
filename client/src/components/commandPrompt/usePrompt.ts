@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useCounterStore } from "../../stores/counter"
 
 interface Line {
@@ -11,7 +11,7 @@ interface userAnswer {
     answer: string;
 }
 
-export default function common() {
+export default function usePrompt() {
     const counterStore = useCounterStore()
 
     const apiUrl = process.env.API_BASE_URL;
@@ -89,8 +89,6 @@ export default function common() {
         typedText.value = "";
         await callScript();
 
-        awaitingUserInput.value = true;
-
     }
 
     function delay(ms: number) {
@@ -150,9 +148,14 @@ export default function common() {
                 await delay(500);
                 await typeLine("This is new script.", true);
                 break;
+            default:
+                console.log("scriptPinが存在しません。")
+            
+
         }
 
         counterStore.scriptPin += 1;
+        awaitingUserInput.value = true;
 
     }
 
@@ -161,8 +164,21 @@ export default function common() {
     }
 
     return {
-        scriptLines, typedText, showCursor, awaitingUserInput, userName, loginPrompt,
-        CPUName, showMatrixRain, noShow, addLine, typeLine, delay, processUserInput
+        counterStore, 
+        scriptLines, 
+        typedText, 
+        showCursor, 
+        awaitingUserInput, 
+        userName, 
+        loginPrompt,
+        CPUName, 
+        showMatrixRain, 
+        noShow, 
+        addLine, 
+        typeLine, 
+        delay, 
+        processUserInput, 
+        callScript,
     };
 
 }

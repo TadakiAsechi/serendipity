@@ -2,22 +2,29 @@
     <div class="container">
         <img class="centered-image" src="~/assets/img/robo.png" />
         <div class="dialogue-box">
-            <desktop/> 
+            <desktop ref="desktopCommandPrompt"/> 
         </div>
     </div>
 </template>
 
 <script lang="ts">
+import { ref, onMounted } from 'vue';
 import desktop from '~/components/commandPrompt/desktop.vue';
 
 export default {
-    setup() {
-        onMounted(() => {
-        })
-
-    },
     components: {
         desktop,
+    },
+    setup() {
+        const desktopCommandPrompt = ref();
+
+        onMounted(() => {
+            desktopCommandPrompt.value.callScript();
+        });
+
+        return {
+            desktopCommandPrompt
+        };
     }
 }
 </script>

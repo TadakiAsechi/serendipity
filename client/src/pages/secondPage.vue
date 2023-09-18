@@ -1,15 +1,13 @@
 <template>
     <div>
-        <desktop />
+        <second />
     </div>
 </template>
 
 <script>
 import { ref,onMounted } from "vue";
 
-import desktop from '~/components/secondPage/desktop.vue';
-// import mobile  from '~/components/secondPage/mobile.vue';
-// import matrixRain  from '~/components/matrixRain/matrixRain.vue';
+import second from '~/components/secondPage/second.vue';
 
 
 export default {
@@ -26,9 +24,7 @@ export default {
 
     },
     components: {
-        desktop,
-        // mobile,
-        // matrixRain,
+        second,
     }
 };
 </script>
