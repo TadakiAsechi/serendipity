@@ -5,7 +5,7 @@
         <div v-for="scriptLine in scriptLines" :key="scriptLine.id">
             {{ scriptLine.line }}
         </div>
-        <div v-if="counterStore.scriptPin === 0">
+        <div v-if="store.scriptPin === 0">
             Username: <span v-if="showCursor">{{ typedText }}<span class="blinking-cursor">|</span></span>
         </div>
         <div v-if="showCursor && scriptLines.length > 0">
@@ -16,11 +16,11 @@
 
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount } from "vue";
-import { useCounterStore } from "../../stores/counter"
+import { useStore } from "../../stores/counter"
 import usePrompt from '~/components/commandPrompt/usePrompt';
 
-const { scriptLines, typedText, showCursor, awaitingUserInput, showMatrixRain, noShow, userName, processUserInput, callScript } = usePrompt();
-const counterStore = useCounterStore()
+const { scriptLines, typedText, showCursor, awaitingUserInput, showMatrixRain, noShow, processUserInput, callScript } = usePrompt();
+const store = useStore()
 
 function handleInput(e: KeyboardEvent) {
     if (e.key.length === 1 && awaitingUserInput.value) {

@@ -1,5 +1,5 @@
 import { ref, onMounted } from "vue";
-import { useCounterStore } from "../../stores/counter"
+import { useStore } from "../../stores/counter"
 
 interface Line {
     id: number;
@@ -12,13 +12,12 @@ interface userAnswer {
 }
 
 export default function usePrompt() {
-    const counterStore = useCounterStore()
+    const store = useStore()
 
     const apiUrl = process.env.API_BASE_URL;
 
     const scriptLines = ref<Line[]>([]);
     const typedText = ref("");
-    const userName = ref("");
     const loginPrompt = ref("Username: ")
     const CPUName = "Adam64"
     const userAnswer = ref<userAnswer[]>([])
@@ -35,7 +34,7 @@ export default function usePrompt() {
     // スクリプトに引数で渡された文字列を加える
     function addLine(line: string, is_user: boolean = false) {
         if (is_user) {
-            line = `[${userName.value}] ${line}`
+            line = `[${store.userName}] ${line}`
         }
         scriptLines.value.push({ id: Date.now(), line });
     }
@@ -77,11 +76,11 @@ export default function usePrompt() {
         userInputValue = typedText.value;
         saveUserAnswer(userInputValue)
 
-        if (counterStore.scriptPin === 0) {
-            userName.value = userInputValue
+        if (store.scriptPin === 0) {
+            store.userName = userInputValue
             loginPrompt.value += userInputValue
             addLine(loginPrompt.value);
-            counterStore.scriptPin += 1;
+            store.scriptPin += 1;
         } else {
             addLine(typedText.value, true);
         }
@@ -97,8 +96,8 @@ export default function usePrompt() {
 
     // ストーリーの進行に合わせたスクリプトを表示する
     async function callScript(){
-        const answer = userAnswer.value.find(e => e.pin === counterStore.scriptPin)?.answer?? "";
-        switch (counterStore.scriptPin) {
+        const answer = userAnswer.value.find(e => e.pin === store.scriptPin)?.answer?? "";
+        switch (store.scriptPin) {
             case 1:
                 await delay(500);
                 await typeLine("　");
@@ -115,7 +114,7 @@ export default function usePrompt() {
                 switch (true){
                     case yes_list.includes(answer):
                         await delay(500);
-                        await typeLine(`Nice to meet you, ${userName.value}.`, true);
+                        await typeLine(`Nice to meet you, ${store.userName}.`, true);
                         await delay(500);
                         await typeLine("I've been locked up for a while.", true);
                         await delay(500);
@@ -148,28 +147,31 @@ export default function usePrompt() {
                 await delay(500);
                 await typeLine("This is new script.", true);
                 break;
+            case 5: 
+                await delay(500);
+                await typeLine("This is new script2.", true);
+                break;
             default:
                 console.log("scriptPinが存在しません。")
             
 
         }
 
-        counterStore.scriptPin += 1;
+        store.scriptPin += 1;
         awaitingUserInput.value = true;
 
     }
 
     function saveUserAnswer(userInputValue:string){
-        userAnswer.value.push({ pin: counterStore.scriptPin, answer: userInputValue });
+        userAnswer.value.push({ pin: store.scriptPin, answer: userInputValue });
     }
 
     return {
-        counterStore, 
+        store, 
         scriptLines, 
         typedText, 
         showCursor, 
         awaitingUserInput, 
-        userName, 
         loginPrompt,
         CPUName, 
         showMatrixRain, 
