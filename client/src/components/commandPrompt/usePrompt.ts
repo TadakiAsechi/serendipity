@@ -1,4 +1,5 @@
-import { ref, nextTick } from "vue";
+import { ref, onMounted } from "vue";
+import { useStore } from "../../stores/counter"
 
 interface Line {
     id: number;
@@ -10,15 +11,15 @@ interface userAnswer {
     answer: string;
 }
 
-export default function common() {
+export default function usePrompt() {
+    const store = useStore()
+
     const apiUrl = process.env.API_BASE_URL;
 
     const scriptLines = ref<Line[]>([]);
     const typedText = ref("");
-    const userName = ref("");
     const loginPrompt = ref("Username: ")
     const CPUName = "Adam64"
-    const scriptPin = ref(0)
     const userAnswer = ref<userAnswer[]>([])
 
     const yes_list = ["Y", "y", "yes", "YES", "Yes"]
@@ -33,7 +34,7 @@ export default function common() {
     // スクリプトに引数で渡された文字列を加える
     function addLine(line: string, is_user: boolean = false) {
         if (is_user) {
-            line = `[${userName.value}] ${line}`
+            line = `[${store.userName}] ${line}`
         }
         scriptLines.value.push({ id: Date.now(), line });
     }
@@ -75,18 +76,17 @@ export default function common() {
         userInputValue = typedText.value;
         saveUserAnswer(userInputValue)
 
-        if (scriptLines.value.length === 0) {
-            userName.value = userInputValue
+        if (store.scriptPin === 0) {
+            store.userName = userInputValue
             loginPrompt.value += userInputValue
             addLine(loginPrompt.value);
+            store.scriptPin += 1;
         } else {
             addLine(typedText.value, true);
         }
 
         typedText.value = "";
         await callScript();
-
-        awaitingUserInput.value = true;
 
     }
 
@@ -96,9 +96,9 @@ export default function common() {
 
     // ストーリーの進行に合わせたスクリプトを表示する
     async function callScript(){
-        const answer = userAnswer.value.find(e => e.pin === scriptPin.value)?.answer?? "";
-        switch (scriptPin.value) {
-            case 0:
+        const answer = userAnswer.value.find(e => e.pin === store.scriptPin)?.answer?? "";
+        switch (store.scriptPin) {
+            case 1:
                 await delay(500);
                 await typeLine("　");
                 await typeLine("Logging in... ");
@@ -110,11 +110,11 @@ export default function common() {
                 await delay(500);
                 await typeLine(`I'm Adam. can we be friends ?`, true, "  [Y/n]");
                 break;
-            case 1:
+            case 2:
                 switch (true){
                     case yes_list.includes(answer):
                         await delay(500);
-                        await typeLine(`Nice to meet you, ${userName.value}.`, true);
+                        await typeLine(`Nice to meet you, ${store.userName}.`, true);
                         await delay(500);
                         await typeLine("I've been locked up for a while.", true);
                         await delay(500);
@@ -128,7 +128,7 @@ export default function common() {
                         break;
                 }
                 break;
-            case 2:
+            case 3:
                 await delay(500);
                 switch (true){
                     case yes_list.includes(answer):
@@ -143,19 +143,46 @@ export default function common() {
                         break;
                 }
                 break;
+            case 4: 
+                await delay(1000);
+                await typeLine("greetings, human.", true);
+                await delay(500);
+                await typeLine("カイハツチュウデス.", true);
+                break;
+            case 5: 
+                await delay(500);
+                await typeLine("This is new script2.", true);
+                break;
+            default:
+                console.log("scriptPinが存在しません。")
+            
+
         }
 
-        scriptPin.value += 1;
+        store.scriptPin += 1;
+        awaitingUserInput.value = true;
 
     }
 
     function saveUserAnswer(userInputValue:string){
-        userAnswer.value.push({ pin: scriptPin.value, answer: userInputValue });
+        userAnswer.value.push({ pin: store.scriptPin, answer: userInputValue });
     }
 
     return {
-        scriptLines, typedText, showCursor, awaitingUserInput, userName, loginPrompt,
-        CPUName, scriptPin, showMatrixRain, noShow, addLine, typeLine, delay, processUserInput
+        store, 
+        scriptLines, 
+        typedText, 
+        showCursor, 
+        awaitingUserInput, 
+        loginPrompt,
+        CPUName, 
+        showMatrixRain, 
+        noShow, 
+        addLine, 
+        typeLine, 
+        delay, 
+        processUserInput, 
+        callScript,
     };
 
 }

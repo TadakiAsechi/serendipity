@@ -55,7 +55,7 @@ const createMatrixRain = () => {
     setTimeout(() => {
     router.push('/SecondPage');
       }, 1000);
-  }, 8000);
+  }, 6000);
 };
 
 function animateDrop(span: HTMLElement, delay: number, duration: number) {

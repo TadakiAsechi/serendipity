@@ -5,18 +5,22 @@
         <div v-for="scriptLine in scriptLines" :key="scriptLine.id">
             {{ scriptLine.line }}
         </div>
-        <div v-if="scriptLines.length === 0">
+        <div v-if="store.scriptPin === 0">
             Username: <span v-if="showCursor">{{ typedText }}<span class="blinking-cursor">|</span></span>
         </div>
-        <div v-if="showCursor && scriptLines.length > 0">
+        <div v-else-if="showCursor">
             {{ typedText }}<span class="blinking-cursor">|</span>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import common from '~/components/commandPrompt/common';
-const { scriptLines, typedText, showCursor, awaitingUserInput, showMatrixRain, noShow, processUserInput } = common();
+import { onMounted, onBeforeUnmount } from "vue";
+import { useStore } from "../../stores/counter"
+import usePrompt from '~/components/commandPrompt/usePrompt';
+
+const { scriptLines, typedText, showCursor, awaitingUserInput, showMatrixRain, noShow, processUserInput, callScript } = usePrompt();
+const store = useStore()
 
 function handleInput(e: KeyboardEvent) {
     if (e.key.length === 1 && awaitingUserInput.value) {
@@ -36,6 +40,10 @@ onMounted(async () => {
 onBeforeUnmount(() => {
     document.removeEventListener("keydown", handleInput);
 });
+
+defineExpose({
+    callScript,
+})
 
 </script>
 

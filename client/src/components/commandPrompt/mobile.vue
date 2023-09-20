@@ -5,7 +5,7 @@
         <div v-for="scriptLine in scriptLines" :key="scriptLine.id">
             {{ scriptLine.line }}
         </div>
-        <div v-if="scriptLines.length === 0">
+        <div v-if="store.scriptPin === 0">
             Username: <span v-if="showCursor">{{ typedText }}<span class="blinking-cursor">|</span></span>
         </div>
         <div v-if="showCursor && scriptLines.length > 0">
@@ -16,9 +16,11 @@
 </template>
 
 <script setup lang="ts">
-import common from '~/components/commandPrompt/common';
+import { useStore } from "../../stores/counter"
+import usePrompt from '~/components/commandPrompt/usePrompt';
 
-const { scriptLines, typedText, showCursor, awaitingUserInput, showMatrixRain, noShow,processUserInput } = common();
+const { scriptLines, typedText, showCursor, awaitingUserInput, showMatrixRain, noShow,processUserInput } = usePrompt();
+const store = useStore()
 
 function handleMobileInput() {
     if (typedText.value.endsWith('\n')) {
