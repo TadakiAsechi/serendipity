@@ -8,7 +8,7 @@
         <div v-if="store.scriptPin === 0">
             Username: <span v-if="showCursor">{{ typedText }}<span class="blinking-cursor">|</span></span>
         </div>
-        <div v-if="showCursor && scriptLines.length > 0">
+        <div v-else-if="showCursor">
             {{ typedText }}<span class="blinking-cursor">|</span>
         </div>
     </div>

@@ -144,8 +144,10 @@ export default function usePrompt() {
                 }
                 break;
             case 4: 
+                await delay(1000);
+                await typeLine("greetings, human.", true);
                 await delay(500);
-                await typeLine("This is new script.", true);
+                await typeLine("カイハツチュウデス.", true);
                 break;
             case 5: 
                 await delay(500);
