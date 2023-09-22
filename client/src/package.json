@@ -16,5 +16,8 @@
     "@nuxtjs/dotenv": "^1.4.1",
     "@pinia/nuxt": "^0.4.11",
     "pinia": "^2.1.6"
-  }  
+  },
+  "overrides": {
+    "vue": "latest"
+  }
 }
