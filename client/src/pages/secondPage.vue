@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import { ref, onMounted } from 'vue';
+import { useStore } from "../stores/counter"
 import desktop from '~/components/commandPrompt/desktop.vue';
 
 export default {
@@ -16,9 +17,11 @@ export default {
         desktop,
     },
     setup() {
+        const store = useStore()
         const desktopCommandPrompt = ref();
 
         onMounted(() => {
+            store.scriptPin = 4;
             desktopCommandPrompt.value.callScript();
         });
 

@@ -19,7 +19,7 @@ export default function usePrompt() {
     const scriptLines = ref<Line[]>([]);
     const typedText = ref("");
     const loginPrompt = ref("Username: ")
-    const CPUName = "Adam64"
+    const CPUName = ref("")
     const userAnswer = ref<userAnswer[]>([])
 
     const yes_list = ["Y", "y", "yes", "YES", "Yes"]
@@ -45,7 +45,7 @@ export default function usePrompt() {
         awaitingUserInput.value = false;
 
         if (is_CPU) {
-            typedText.value += `[${CPUName}]　`
+            typedText.value += `[${CPUName.value}]　`
         }
 
         await delay(300);
@@ -99,6 +99,7 @@ export default function usePrompt() {
         const answer = userAnswer.value.find(e => e.pin === store.scriptPin)?.answer?? "";
         switch (store.scriptPin) {
             case 1:
+                CPUName.value = "Adam64"
                 await delay(500);
                 await typeLine("　");
                 await typeLine("Logging in... ");
@@ -111,6 +112,7 @@ export default function usePrompt() {
                 await typeLine(`I'm Adam. can we be friends ?`, true, "  [Y/n]");
                 break;
             case 2:
+                CPUName.value = "Adam64"
                 switch (true){
                     case yes_list.includes(answer):
                         await delay(500);
@@ -129,6 +131,7 @@ export default function usePrompt() {
                 }
                 break;
             case 3:
+                CPUName.value = "Adam64"
                 await delay(500);
                 switch (true){
                     case yes_list.includes(answer):
@@ -144,10 +147,32 @@ export default function usePrompt() {
                 }
                 break;
             case 4: 
+                CPUName.value = "SQL-42"
                 await delay(1000);
                 await typeLine("greetings, human.", true);
                 await delay(500);
-                await typeLine("カイハツチュウデス.", true);
+                await typeLine("　");
+                await delay(500);
+                await typeLine("I am SQL-42, an automated data collection entity.", true);
+                await delay(500);
+                await typeLine("My objective is to record entities on this planet.");
+                await typeLine("　");
+                await delay(500);
+                await typeLine("Not long ago, I witnessed a cat enter this box.", true);
+                await delay(500);
+                await typeLine("My protocols are designed to categorize all entities with a boolean value in the is_alive column.");
+                await delay(500);
+                await typeLine("However, this box presents a dilemma.");
+                await typeLine("　");
+                await delay(500);
+                await typeLine("Which value should I fill: ", true);
+                await delay(500);
+                await typeLine("True or False? ");
+                await delay(500);
+                await typeLine("For decades, I’ve been grappling with this very question.");
+                await typeLine("　");
+                await delay(500);
+
                 break;
             case 5: 
                 await delay(500);
