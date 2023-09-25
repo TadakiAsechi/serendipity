@@ -82,7 +82,7 @@ export default function usePrompt() {
             addLine(loginPrompt.value);
             store.scriptPin += 1;
         } else if(store.scriptPin === 5) {
-            
+            console.log("call api!")
         } else {
             addLine(typedText.value, true);
         }
