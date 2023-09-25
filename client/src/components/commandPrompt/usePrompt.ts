@@ -81,6 +81,8 @@ export default function usePrompt() {
             loginPrompt.value += userInputValue
             addLine(loginPrompt.value);
             store.scriptPin += 1;
+        } else if(store.scriptPin === 5) {
+            
         } else {
             addLine(typedText.value, true);
         }
