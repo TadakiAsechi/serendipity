@@ -6,27 +6,23 @@ interface Line {
     line: string;
 }
 
-interface userAnswer {
-    pin: number;
-    answer: string;
-}
-
 export default function usePrompt() {
     const store = useStore()
 
-    const apiUrl = process.env.API_BASE_URL;
+    const runtimeConfig = useRuntimeConfig();
+    const apiUrl = runtimeConfig.public.apiUrl;
 
     const scriptLines = ref<Line[]>([]);
     const typedText = ref("");
     const loginPrompt = ref("Username: ")
     const CPUName = ref("")
-    const userAnswer = ref<userAnswer[]>([])
 
     const yes_list = ["Y", "y", "yes", "YES", "Yes"]
     const no_list = ["N", "n", "no", "NO", "No"]
 
     const showCursor = ref(true);
     const awaitingUserInput = ref(false);
+    let answerCount = 0
 
     const showMatrixRain = ref(false);
     const noShow = ref(false)
@@ -82,11 +78,14 @@ export default function usePrompt() {
             addLine(loginPrompt.value);
             store.scriptPin += 1;
         } else if(store.scriptPin === 5) {
+            const data = getAnswerObj()
+            sendAnswer(data)
             console.log("call api!")
         } else {
             addLine(typedText.value, true);
         }
 
+        answerCount += 1;
         typedText.value = "";
         await callScript();
 
@@ -98,7 +97,7 @@ export default function usePrompt() {
 
     // ストーリーの進行に合わせたスクリプトを表示する
     async function callScript(){
-        const answer = userAnswer.value.find(e => e.pin === store.scriptPin)?.answer?? "";
+        const answer = store.userAnswer.find(e => e.pin === store.scriptPin)?.answer?? "";
         switch (store.scriptPin) {
             case 1:
                 CPUName.value = "Adam64"
@@ -187,12 +186,25 @@ export default function usePrompt() {
         }
 
         store.scriptPin += 1;
+        answerCount = 0;
         awaitingUserInput.value = true;
 
     }
 
     function saveUserAnswer(userInputValue:string){
-        userAnswer.value.push({ pin: store.scriptPin, answer: userInputValue });
+        store.userAnswer.push({ pin: store.scriptPin, count: answerCount, answer: userInputValue });
+    }
+
+    async function sendAnswer(data:Object){
+        const response = fetch(apiUrl, { method: "POST", body: JSON.stringify(data)})
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+    }
+
+    function getAnswerObj(){
+        const answer = store.userAnswer.filter((e)=>e.pin === store.scriptPin).slice(-1)[0];
+        const data = {answer: answer.answer, scriptPin: store.scriptPin} 
+        return data;
     }
 
     return {

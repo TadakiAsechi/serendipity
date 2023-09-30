@@ -1,1 +1,8 @@
-{}
+{
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0"
+  },
+  "dependencies": {
+    "@nuxtjs/dotenv": "^1.4.1"
+  }
+}
