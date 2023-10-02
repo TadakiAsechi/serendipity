@@ -42,8 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'check_answer.apps.CheckAnswerConfig',
     'corsheaders',
+    'check_answer.apps.CheckAnswerConfig',
+    'script.apps.ScriptConfig'
 ]
 
 MIDDLEWARE = [
