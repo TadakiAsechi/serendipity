@@ -1,10 +1,16 @@
 from django.db import models
 
 class Script(models.Model):
+    class Meta:
+        db_table = "script_tbl" 
+
     pin = models.PositiveIntegerField(unique=True)
     CPUName = models.CharField(max_length=100)
 
 class Line(models.Model):
+    class Meta:
+        db_table = "line_tbl" 
+
     TYPE_CHOICE = [
         ("delay", "Delay"),
         ("typeline", "Type Line")
